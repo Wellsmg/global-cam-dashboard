@@ -36,18 +36,23 @@
         </div>
     </div>
 
-    <!-- TARGET ANALYSIS SIDEBOARD PANEL (FV1) -->
+       <!-- TARGET ANALYSIS SIDEBOARD PANEL (FV1) -->
     <div id="target-analysis-panel">
         <div id="analysis-panel-header">
             <span>// SECTOR PROFILE IDENTIFIED</span>
-            <!-- CAMERA ACCESS TRIGGER IN TOP RIGHT CORNER -->
-            <div id="camera-matrix-toggle" onclick="toggleCameraMatrixGrid()">
-                <svg xmlns="http://w3.org" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#00ffcc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-                    <circle cx="12" cy="13" r="4"></circle>
-                </svg>
+            <div style="display: flex; gap: 12px; align-items: center;">
+                <!-- NEW: Neon close button trigger -->
+                <span onclick="closeTargetAnalysis()" style="color: #ff3366; cursor: pointer; font-size: 11px; font-weight: bold; border: 1px solid rgba(255,51,102,0.3); padding: 4px 8px; border-radius: 4px;">[ CLOSE ]</span>
+                <!-- CAMERA ACCESS TRIGGER -->
+                <div id="camera-matrix-toggle" onclick="toggleCameraMatrixGrid()">
+                    <svg xmlns="http://w3.org" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#00ffcc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                        <circle cx="12" cy="13" r="4"></circle>
+                    </svg>
+                </div>
             </div>
         </div>
+
         
         <div id="target-location-name">// STANDBY FOR DATA...</div>
         
