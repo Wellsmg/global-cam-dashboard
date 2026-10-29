@@ -62,7 +62,7 @@ window.handleSearchKeyPress = function(event) {
     }
 };
 
-// --- THE NETWORK SEARCH MATRIX (CORS-PROOF JSONP ROUTING) ---
+// --- THE NETWORK SEARCH MATRIX (SERVER-AUTHENTICATED FETCH) ---
 
 window.triggerGlobalSearch = function() {
     const queryText = document.getElementById('target-search-field').value.trim();
@@ -72,19 +72,32 @@ window.triggerGlobalSearch = function() {
     searchField.placeholder = "SCANNING SECTOR...";
     searchField.disabled = true;
 
-    // Create a unique temporary global callback function for the server response
-    const uniqueCallbackName = "osm_search_callback_" + Math.floor(Math.random() * 100000);
+    // OpenStreetMap official global lookups server endpoint address
+    const apiServerEndpoint = "https://openstreetmap.org";
     
-    window[uniqueCallbackName] = function(data) {
-        // Clean up the temporary script element and global window tracking variables
-        document.body.removeChild(document.getElementById('osm-jsonp-script'));
-        delete window[uniqueCallbackName];
+    // Pristine, standard search request format (NO buggy json_callbacks!)
+    const completeSearchUrl = apiServerEndpoint + "?format=json&q=" + encodeURIComponent(queryText) + "&limit=1";
 
+    // We pass a clear User-Agent header so the server identifies our GitHub domain as an authorized application
+    fetch(completeSearchUrl, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'User-Agent': 'GlobalSurveillanceMatrixDashboard/2.0 (Hosted Production Deck)'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Matrix Server responded with code: " + response.status);
+        }
+        return response.json();
+    })
+    .then(data => {
         searchField.placeholder = "ENTER SECTOR COORDINATES OR NAME...";
         searchField.disabled = false;
 
         if (data && data.length > 0) {
-            const resultLocation = data[0];
+            const resultLocation = data[0]; // Grab the first matched global position profile item
             const lat = parseFloat(resultLocation.lat);
             const lon = parseFloat(resultLocation.lon);
             const displayName = resultLocation.display_name;
@@ -120,17 +133,13 @@ window.triggerGlobalSearch = function() {
         } else {
             alert("MATRIX WARNING: SECTOR NOT IDENTIFIED. CHECK COORDINATE TEXT.");
         }
-    };
-
-    // Inject the request directly into the head element to bypass the CORS block!
-    const jsonpScript = document.createElement('script');
-    jsonpScript.id = 'osm-jsonp-script';
-    
-    // We target the open Nominatim endpoint format parameters using a trusted script payload wrapper
-    const apiServerEndpoint = "https://openstreetmap.org";
-    jsonpScript.src = apiServerEndpoint + "?format=json&q=" + encodeURIComponent(queryText) + "&limit=1&json_callback=" + uniqueCallbackName;
-    
-    document.body.appendChild(jsonpScript);
+    })
+    .catch(error => {
+        searchField.placeholder = "ENTER SECTOR COORDINATES OR NAME...";
+        searchField.disabled = false;
+        alert("SEARCH SYSTEM FAILURE: Check active server logs.");
+        console.error("Search system error details:", error);
+    });
 };
 
 
