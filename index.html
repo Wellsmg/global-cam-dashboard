@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Surveillance Matrix v2</title>
+    <link rel="icon" type="image/png" href="icon.png">
+    <!-- Local fallback maps styling sheet -->
+    <link rel="stylesheet" href="leaflet.css" />
+    
+    <!-- Custom scifi dashboard interface design -->
+    <link rel="stylesheet" href="style.css" />
+    
+    <!-- Core Leaflet map framework tools -->
+    <script src="leaflet.js"></script>
+
+    <!-- Pannellum 360 Panorama Viewer Assets from trusted jsDelivr CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.7/build/pannellum.css"/>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pannellum@2.5.7/build/pannellum.js"></script>
+</head>
+<body>
+
+    <!-- FLOATING HUD SEARCH GLASS -->
+    <div id="hud-search-trigger" onclick="toggleSearchDeck()">
+        <svg xmlns="http://w3.org" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#00ffcc" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+    </div>
+
+    <!-- EXPANDABLE SEARCH DECK PANEL -->
+    <div id="search-deck-overlay">
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="text" id="target-search-field" placeholder="ENTER SECTOR COORDINATES OR NAME..." onkeypress="handleSearchKeyPress(event)">
+            <button onclick="triggerGlobalSearch()" style="background:#0f172a; border:1px solid #00ffcc; color:#00ffcc; font-family:monospace; padding:8px 12px; border-radius:4px; cursor:pointer;">SCAN</button>
+        </div>
+    </div>
+
+    <!-- TARGET ANALYSIS SIDEBOARD PANEL (FV1) -->
+    <div id="target-analysis-panel">
+        <div id="analysis-panel-header">
+            <span>// SECTOR PROFILE IDENTIFIED</span>
+            <!-- CAMERA ACCESS TRIGGER IN TOP RIGHT CORNER -->
+            <div id="camera-matrix-toggle" onclick="toggleCameraMatrixGrid()">
+                <svg xmlns="http://w3.org" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#00ffcc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                    <circle cx="12" cy="13" r="4"></circle>
+                </svg>
+            </div>
+        </div>
+        
+        <div id="target-location-name">// STANDBY FOR DATA...</div>
+        
+        <!-- DYNAMIC CONTROL UTILITY TOOLBAR -->
+        <div id="target-utility-bar">
+            <button class="util-btn" onclick="calculateSectorDirections()">
+                [ MAP DIRECTIONS ]
+            </button>
+            <button class="util-btn" id="favorite-toggle-btn" onclick="toggleFavoriteVaultStatus()">
+                <svg xmlns="http://w3.org" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#ff3366" stroke-width="2" style="vertical-align: middle; margin-right: 4px;">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+                <span id="fav-status-text">FAVORITE</span>
+            </button>
+        </div>
+
+        <!-- EMBEDDED 5-CAMERA FEED MATRIX PANEL (Hidden inside menu till toggled) -->
+        <div id="embedded-camera-matrix">
+            <div style="font-size: 11px; color: #00ffcc; margin-bottom: 8px; font-weight: bold; border-bottom: 1px solid rgba(0,255,204,0.2); padding-bottom: 4px;">
+                // SECURE MULTI-STREAM FEED LINK ACTIVE
+            </div>
+            <div id="matrix-video-holder">
+                <!-- Video layouts dynamically wire here upon deployment -->
+            </div>
+        </div>
+    </div>
+
+    <!-- MASTER CONTAINER BOX MAP VIEWPORT -->
+    <div id="map"></div>
+
+    <!-- Hidden Street View Tactical Overlay Panel -->
+    <div id="streetview-container">
+        <div id="streetview-header">
+            <span>// STAGE 2: LOCAL STREET LEVEL SURVEILLANCE</span>
+            <span id="close-streetview" onclick="closeStreetView()">[ CLOSE TERMINAL ]</span>
+        </div>
+        <iframe id="google-streetview-player" src="" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+
+    <!-- Our dedicated separate tracking logic dashboard script file -->
+    <script src="app.js"></script>
+
+</body>
+</html>

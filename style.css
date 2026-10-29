@@ -1,0 +1,219 @@
+/* Core structural layout properties to stretch completely across the window frame */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0b0f19;
+    overflow: hidden;
+    display: flex; /* FIXED: Setting a flex framework layout forces the panels to share screen width natively! */
+}
+
+/* Master container map box view canvas */
+#map {
+    height: 100vh;
+    flex-grow: 1; /* Maps dynamically takes up all remaining layout width automatically */
+    background-color: #0b0f19;
+    transition: width 0.4s cubic-bezier(0.1, 0.9, 0.2, 1);
+}
+
+/* --- FLOATING HUD SEARCH GLASS ICON BUTTON --- */
+#hud-search-trigger {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 3000;
+    background: #0f172a;
+    border: 1px solid #00ffcc;
+    border-radius: 50%;
+    width: 46px;
+    height: 46px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
+    transition: all 0.2s ease-in-out;
+}
+#hud-search-trigger:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
+    background: #1e293b;
+}
+
+/* --- EXPANDABLE EXPANDED SEARCH OVERLAY PANEL --- */
+#search-deck-overlay {
+    position: absolute;
+    top: -80px;
+    left: 80px;
+    z-index: 2999;
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(0, 255, 204, 0.3);
+    border-radius: 6px;
+    padding: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    transition: top 0.3s cubic-bezier(0.1, 0.9, 0.2, 1);
+}
+#search-deck-overlay.active {
+    top: 20px;
+}
+#target-search-field {
+    background: #020617;
+    border: 1px solid rgba(0, 255, 204, 0.2);
+    color: #ffffff;
+    font-family: monospace;
+    padding: 8px 12px;
+    width: 280px;
+    border-radius: 4px;
+    outline: none;
+}
+
+/* --- TARGET SIDEBOARD ANALYZER PROFILE PANEL (FV1) --- */
+#target-analysis-panel {
+    position: fixed; /* FIXED: Keeps positioning explicit relative to the browser viewport container edges */
+    top: 0;
+    right: -420px; /* Perfectly hidden offscreen to start */
+    width: 400px;
+    height: 100vh; /* Expands to full screen height so nothing gets cramped */
+    z-index: 2500;
+    background: #0f172a;
+    border-left: 2px solid #00ffcc; /* Sleek vertical divider border */
+    padding: 20px;
+    box-sizing: border-box;
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+    transition: right 0.4s cubic-bezier(0.1, 0.9, 0.2, 1);
+    font-family: monospace;
+    overflow-y: auto;
+}
+#target-analysis-panel.active {
+    right: 0; /* Slides out flush to the right browser wall beautifully! */
+}
+#analysis-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #64748b;
+    font-size: 11px;
+    letter-spacing: 1px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+}
+#camera-matrix-toggle {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 255, 204, 0.3);
+    transition: all 0.2s;
+}
+#camera-matrix-toggle:hover {
+    background: rgba(0, 255, 204, 0.1);
+    box-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
+}
+#target-location-name {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 16px;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+/* --- DYNAMIC ACTION UTILITY CONTROL DECK BAR --- */
+#target-utility-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+.util-btn {
+    flex: 1;
+    background: #020617;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #94a3b8;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: monospace;
+    font-size: 11px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+.util-btn:hover {
+    background: #1e293b;
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.3);
+}
+#favorite-toggle-btn.bookmarked {
+    border-color: #ff3366;
+    color: #ff3366;
+    box-shadow: 0 0 10px rgba(255, 51, 102, 0.15);
+}
+
+/* --- EMBEDDED 5-CAMERA LIVE VIEW MATRICES PANEL --- */
+#embedded-camera-matrix {
+    display: none;
+    background: #020617;
+    border: 1px solid rgba(0, 255, 204, 0.15);
+    border-radius: 4px;
+    padding: 12px;
+    margin-top: 15px;
+}
+#embedded-camera-matrix.deployed {
+    display: block;
+}
+
+/* --- CORE STREET VIEW SLIT ENVIRONMENT PANEL --- */
+#streetview-container {
+    position: absolute;
+    bottom: -100vh;
+    left: 0;
+    width: 100%;
+    height: 50vh;
+    background: #0f172a;
+    border-top: 2px solid #00ffcc;
+    box-shadow: 0 -10px 30px rgba(0, 255, 204, 0.15);
+    z-index: 3500;
+    display: flex;
+    flex-direction: column;
+    transition: bottom 0.4s ease-in-out;
+}
+#streetview-container.active {
+    bottom: 0;
+}
+#streetview-header {
+    background: #0b0f19;
+    color: #00ffcc;
+    padding: 10px 20px;
+    font-family: monospace;
+    font-size: 12px;
+    letter-spacing: 1px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(0, 255, 204, 0.2);
+}
+#close-streetview {
+    color: #ff3366;
+    cursor: pointer;
+}
+#google-streetview-player {
+    width: 100%;
+    flex-grow: 1;
+    background: #020617;
+    border: none;
+}
+
+/* Map controller layers stacking box formatting */
+.leaflet-control-layers {
+    background: #1e293b !important;
+    color: #00ffcc !important;
+    font-family: monospace !important;
+    border: 1px solid #00ffcc !important;
+}
