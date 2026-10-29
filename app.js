@@ -73,7 +73,7 @@ window.triggerGlobalSearch = function() {
     searchField.disabled = true;
 
     // OpenStreetMap official global lookups server endpoint address
-    const apiServerEndpoint = "https://openstreetmap.org";
+    const apiServerEndpoint = "https://nominatim.openstreetmap.org/search";
     
     // Pristine, standard search request format (NO buggy json_callbacks!)
     const completeSearchUrl = apiServerEndpoint + "?format=json&q=" + encodeURIComponent(queryText) + "&limit=1";
