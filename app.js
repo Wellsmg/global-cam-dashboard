@@ -241,3 +241,14 @@ window.deployStreetView = function(locationName) {
     document.getElementById('streetview-container').classList.remove('active');
     document.getElementById('google-streetview-player').src = "";
 }; 
+// This function smoothly retracts the target analysis sideboard off the screen
+window.closeTargetAnalysis = function() {
+    const analysisPanel = document.getElementById('target-analysis-panel');
+    analysisPanel.classList.remove('active');
+    
+    // Turn off the camera grid if it was left open so streams stop running in the background
+    document.getElementById('embedded-camera-matrix').classList.remove('deployed');
+    
+    // Clear out our active tracking data state safely
+    window.activeTargetData = null;
+};
